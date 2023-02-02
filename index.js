@@ -15,4 +15,16 @@ const io = SocketIO.listen(server);
 
 io.on("connection", (socket) => {
   console.log("new connection", socket.id);
+
+  socket.on("chat:message", (data) => {
+    io.sockets.emit("chat:message", data);
+  });
+
+  socket.on("chat:typing", (data) => {
+    socket.broadcast.emit("chat:typing", data);
+  });
+
+  socket.on("chat:clear", () => {
+    socket.broadcast.emit("chat:clear");
+  });
 });
